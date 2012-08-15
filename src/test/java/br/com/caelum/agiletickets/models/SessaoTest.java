@@ -31,6 +31,14 @@ public class SessaoTest {
 	}
 
 	@Test
+	public void naoDeveReservarUmNumeroNegativoDeVagas() throws Exception {
+		Sessao sessao = new Sessao();
+		sessao.setTotalIngressos(5);
+
+		Assert.assertFalse(sessao.podeReservar(-1));
+	}
+
+	@Test
 	public void reservarIngressosDeveDiminuirONumeroDeIngressosDisponiveis() throws Exception {
 		Sessao sessao = new Sessao();
 		sessao.setTotalIngressos(5);
