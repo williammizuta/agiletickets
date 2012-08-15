@@ -27,9 +27,8 @@ import com.google.common.base.Strings;
 public class EspetaculosController {
 
 	private final Agenda agenda;
-	private Validator validator;
-	private Result result;
-	private Estabelecimento estabelecimento;
+	private final Validator validator;
+	private final Result result;
 
 	private final DiretorioDeEstabelecimentos estabelecimentos;
 
