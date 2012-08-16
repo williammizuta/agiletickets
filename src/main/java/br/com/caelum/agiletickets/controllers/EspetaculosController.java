@@ -46,10 +46,10 @@ public class EspetaculosController {
 
 	@Post @Path("/espetaculos")
 	public void adiciona(Espetaculo espetaculo) {
-		if (Strings.isNullOrEmpty(espetaculo.getNome())) {
+		if (espetaculo.isNomeValido()) {
 			validator.add(new ValidationMessage("Nome do espetáculo não pode estar em branco", ""));
 		}
-		if (Strings.isNullOrEmpty(espetaculo.getDescricao())) {
+		if (espetaculo.isDescricaoValida()) {
 			validator.add(new ValidationMessage("Descrição do espetáculo não pode estar em branco", ""));
 		}
 		validator.onErrorRedirectTo(this).lista();

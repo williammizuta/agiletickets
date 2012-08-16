@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
+import com.google.common.base.Strings;
+
 @Entity
 public class Espetaculo {
 
@@ -81,6 +83,14 @@ public class Espetaculo {
 
 	public List<Sessao> criaSessoes(LocalDate inicio, LocalDate fim, LocalTime horario, Periodicidade periodicidade) {
 		return null;
+	}
+
+	public boolean isNomeValido() {
+		return Strings.isNullOrEmpty(nome);
+	}
+
+	public boolean isDescricaoValida() {
+		return Strings.isNullOrEmpty(descricao);
 	}
 
 }
