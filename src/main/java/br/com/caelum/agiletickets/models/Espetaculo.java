@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+import org.joda.time.Weeks;
 
 import com.google.common.base.Strings;
 
@@ -85,18 +86,30 @@ public class Espetaculo {
 
 	public List<Sessao> criaSessoes(LocalDate inicio, LocalDate fim, LocalTime horario, Periodicidade periodicidade) {
 		List<Sessao> sessoes = new ArrayList<>();
+		int numeroDeSessoes;
 
 		if (inicio.isAfter(fim)) {
 			return sessoes;
 		}
 
-			int numeroDeSessoes = Days.daysBetween(inicio, fim).getDays();
+		if (periodicidade.equals(Periodicidade.DIARIA)) {
+			numeroDeSessoes = Days.daysBetween(inicio, fim).getDays();
 			for(int i = 0; i <= numeroDeSessoes; i++) {
 				Sessao sessao = new Sessao();
 				sessao.setInicio(inicio.plusDays(i).toDateTime(horario));
 				sessao.setEspetaculo(this);
 				sessao.setDuracaoEmMinutos(0);
-			sessoes.add(sessao);
+				sessoes.add(sessao);
+			}
+		} else {
+			numeroDeSessoes = Weeks.weeksBetween(inicio, fim).getWeeks();
+			for(int i = 0; i <= numeroDeSessoes; i++) {
+				Sessao sessao = new Sessao();
+				sessao.setInicio(inicio.plusWeeks(i).toDateTime(horario));
+				sessao.setEspetaculo(this);
+				sessao.setDuracaoEmMinutos(0);
+				sessoes.add(sessao);
+			}
 		}
 
 		return sessoes;
