@@ -29,8 +29,16 @@ public class EspetaculoTest {
 	@Test
 	public void criaNenhumaSessaoSeInicioMaiorQueFim() throws Exception {
 		LocalDate fim = new LocalDate(2012, 8, 15);
-
 		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, null, Periodicidade.DIARIA);
 		Assert.assertEquals(0, sessoes.size());
+	}
+
+	@Test
+	public void verificaSeSessoesPeriodicidadeDiariaEstaoCorretas() throws Exception {
+		LocalDate fim = new LocalDate(2012,8,18);
+		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, null, Periodicidade.DIARIA);
+		Assert.assertEquals(inicio, new LocalDate(sessoes.get(0).getInicio()));
+		Assert.assertEquals(inicio.plusDays(1), new LocalDate(sessoes.get(1).getInicio()));
+		Assert.assertEquals(inicio.plusDays(2), new LocalDate(sessoes.get(2).getInicio()));
 	}
 }

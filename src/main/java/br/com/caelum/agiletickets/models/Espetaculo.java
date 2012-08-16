@@ -90,17 +90,12 @@ public class Espetaculo {
 			return sessoes;
 		}
 
-		int numeroDeSessoes = 0;
-
-		Days diasEntre = Days.daysBetween(inicio, fim);
-		numeroDeSessoes = diasEntre.getDays();
-
-		Sessao sessao = new Sessao();
-		sessao.setInicio(inicio.toDateTime(horario));
-		sessao.setEspetaculo(this);
-		sessao.setDuracaoEmMinutos(0);
-
-		for(int i = 0; i <= numeroDeSessoes; i++) {
+			int numeroDeSessoes = Days.daysBetween(inicio, fim).getDays();
+			for(int i = 0; i <= numeroDeSessoes; i++) {
+				Sessao sessao = new Sessao();
+				sessao.setInicio(inicio.plusDays(i).toDateTime(horario));
+				sessao.setEspetaculo(this);
+				sessao.setDuracaoEmMinutos(0);
 			sessoes.add(sessao);
 		}
 
