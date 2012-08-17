@@ -1,8 +1,11 @@
 package br.com.caelum.agiletickets.models;
 
-import java.util.List;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
-import junit.framework.Assert;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -16,14 +19,14 @@ public class EspetaculoTest {
 	@Before
 	public void criaEspetaculo() {
 		this.espetaculo = new Espetaculo();
-		this.inicio = new LocalDate(2012,8,16);
+		this.inicio = new LocalDate(2012, 8, 16);
 	}
 
 	@Test
 	public void criaSessoesEspetaculoDiario() throws Exception {
-		LocalDate fim = new LocalDate(2012,8,26);
+		LocalDate fim = new LocalDate(2012, 8, 26);
 		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, null, Periodicidade.DIARIA);
-		Assert.assertEquals(11, sessoes.size());
+		assertThat(sessoes.size(), is(11));
 	}
 
 	@Test
@@ -31,39 +34,39 @@ public class EspetaculoTest {
 		LocalDate fim = new LocalDate(2012, 8, 15);
 
 		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, null, Periodicidade.DIARIA);
-		Assert.assertEquals(0, sessoes.size());
+		assertThat(sessoes.size(), is(0));
 
 		sessoes = espetaculo.criaSessoes(inicio, fim, null, Periodicidade.SEMANAL);
-		Assert.assertEquals(0, sessoes.size());
+		assertThat(sessoes.size(), is(0));
 	}
 
 	@Test
 	public void verificaSeSessoesPeriodicidadeDiariaEstaoCorretas() throws Exception {
-		LocalDate fim = new LocalDate(2012,8,18);
+		LocalDate fim = new LocalDate(2012, 8, 18);
 		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, null, Periodicidade.DIARIA);
-		Assert.assertEquals(inicio, getDiaFrom(sessoes.get(0)));
-		Assert.assertEquals(inicio.plusDays(1), getDiaFrom(sessoes.get(1)));
-		Assert.assertEquals(inicio.plusDays(2), getDiaFrom(sessoes.get(2)));
-	}
-
-	private LocalDate getDiaFrom(Sessao sessao) {
-		return new LocalDate(sessao.getInicio());
+		assertThat(getDiasFrom(sessoes), hasItems(inicio, inicio.plusDays(1), inicio.plusDays(2)));
 	}
 
 	@Test
 	public void criaSessoesEspetaculoSemanal() throws Exception {
 		LocalDate fim = new LocalDate(2012, 8, 26);
 		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, null, Periodicidade.SEMANAL);
-		Assert.assertEquals(2, sessoes.size());
+		assertThat(sessoes.size(), is(2));
 	}
 
 	@Test
 	public void verificaSeSessoesPeriodicidadeSemanalEstaoCorretas() throws Exception {
 		LocalDate fim = new LocalDate(2012, 8, 31);
 		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, null, Periodicidade.SEMANAL);
-		Assert.assertEquals(inicio, getDiaFrom(sessoes.get(0)));
-		Assert.assertEquals(inicio.plusDays(7), getDiaFrom(sessoes.get(1)));
-		Assert.assertEquals(inicio.plusDays(14), getDiaFrom(sessoes.get(2)));
+		assertThat(getDiasFrom(sessoes), hasItems(inicio, inicio.plusWeeks(1), inicio.plusWeeks(2)));
+	}
+
+	private List<LocalDate> getDiasFrom(List<Sessao> sessoes) {
+		List<LocalDate> dias = new ArrayList<>();
+		for (Sessao sessao : sessoes) {
+			dias.add(new LocalDate(sessao.getInicio()));
+		}
+		return dias;
 	}
 
 }
