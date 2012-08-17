@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -93,26 +92,19 @@ public class Espetaculo {
 			return sessoes;
 		}
 
-		if (periodicidade.equals(Periodicidade.DIARIA)) {
-			numeroDeSessoes = Days.daysBetween(inicio, fim).getDays();
-			for(int i = 0; i <= numeroDeSessoes; i++) {
-				Sessao sessao = criarSessao(inicio.plusDays(i).toDateTime(horario));
-				sessoes.add(sessao);
-			}
-		} else {
-			numeroDeSessoes = Weeks.weeksBetween(inicio, fim).getWeeks();
-			for(int i = 0; i <= numeroDeSessoes; i++) {
-				Sessao sessao = criarSessao(inicio.plusWeeks(i).toDateTime(horario));
-				sessoes.add(sessao);
-			}
+		numeroDeSessoes = periodicidade.equals(Periodicidade.DIARIA) ? Days.daysBetween(inicio, fim).getDays() : Weeks.weeksBetween(inicio, fim).getWeeks();
+
+		for(int i = 0; i <= numeroDeSessoes; i++) {
+			Sessao sessao = criarSessao(inicio, horario, i, periodicidade);
+			sessoes.add(sessao);
 		}
 
 		return sessoes;
 	}
 
-	private Sessao criarSessao(DateTime dia) {
+	private Sessao criarSessao(LocalDate inicio, LocalTime horario, int i, Periodicidade periodicidade) {
 		Sessao sessao = new Sessao();
-		sessao.setInicio(dia);
+		sessao.setInicio(inicio.plusDays(i * periodicidade.getDiferencaEmDias()).toDateTime(horario));
 		sessao.setEspetaculo(this);
 		sessao.setDuracaoEmMinutos(0);
 		return sessao;
