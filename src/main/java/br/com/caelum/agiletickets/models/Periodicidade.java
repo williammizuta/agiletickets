@@ -1,5 +1,7 @@
 package br.com.caelum.agiletickets.models;
 
+import org.joda.time.LocalDate;
+
 public enum Periodicidade {
 	DIARIA(1), SEMANAL(7);
 
@@ -9,8 +11,8 @@ public enum Periodicidade {
 		this.dias = dias;
 	}
 
-	public int getDiferencaEmDias() {
-		return this.dias;
+	public LocalDate getProximoDia(LocalDate data) {
+		return data.plusDays(dias);
 	}
 
 }
