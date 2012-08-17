@@ -85,10 +85,6 @@ public class Espetaculo {
 	public List<Sessao> criaSessoes(LocalDate inicio, LocalDate fim, LocalTime horario, Periodicidade periodicidade) {
 		List<Sessao> sessoes = new ArrayList<>();
 
-		if (inicio.isAfter(fim)) {
-			return sessoes;
-		}
-
 		LocalDate dia = inicio;
 		while(dia.isBefore(fim) || dia.isEqual(fim)) {
 			Sessao sessao = new Sessao();
