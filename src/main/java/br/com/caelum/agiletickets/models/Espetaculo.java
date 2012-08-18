@@ -84,16 +84,12 @@ public class Espetaculo {
 
 	public List<Sessao> criaSessoes(LocalDate inicio, LocalDate fim, LocalTime horario, Periodicidade periodicidade) {
 		List<Sessao> sessoes = new ArrayList<>();
-
-		LocalDate dia = inicio;
-		while(dia.isBefore(fim) || dia.isEqual(fim)) {
+		for(LocalDate dia = inicio; !dia.isAfter(fim); dia = periodicidade.getProximoDia(dia)) {
 			Sessao sessao = new Sessao();
 			sessao.setInicio(dia.toDateTime(horario));
 			sessao.setEspetaculo(this);
 			sessoes.add(sessao);
-			dia = periodicidade.getProximoDia(dia);
 		}
-
 		return sessoes;
 	}
 
